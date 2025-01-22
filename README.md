@@ -65,6 +65,11 @@ java -jar ./neoris-account-microservice/build/libs/neoris-account-microservice-1
 1) Build application
 
 ```shell
+./gradlew clean build
+
+```
+OR
+```shell
 ./gradlew clean build -x test
 ```
 
