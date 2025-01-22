@@ -1,0 +1,6 @@
+rootProject.name = 'neoris-account-microservice'
+include 'neoris-account-vo'
+include 'neoris-account-client'
+include 'neoris-account-core'
+include 'neoris-account-services'
+
