@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">neoris-account-services</a> &gt; <a href="index.source.html" class="el_package">com.neoris.account.account.controllers</a> &gt; <span class="el_source">AccountController.java</span></div><h1>AccountController.java</h1><pre class="source lang-java linenums">package com.neoris.account.account.controllers;
+
+
+import com.neoris.account.account.entities.AccountEntity;
+import com.neoris.account.account.services.IAccountService;
+import com.neoris.account.account.vo.CreateAccountVo;
+import com.neoris.account.account.vo.ReportAccountVo;
+import com.neoris.account.account.vo.UpdateAccountVo;
+import com.neoris.account.common.web.Response;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Controller for Account
+ *
+ * @author Kevin
+ * @version 1.0
+ */
+@RestController
+@RequestMapping(&quot;cuentas&quot;)
+@Lazy
+@Tag(name = &quot;cuentas&quot;, description = &quot;Accounts API&quot;)
+<span class="nc" id="L37">public class AccountController {</span>
+
+    @Lazy
+    @Autowired
+    private IAccountService accountService;
+
+    /**
+     * Add a new Account
+     *
+     * @param createAccount Account to create
+     * @return Status code
+     */
+    @PostMapping
+    @Operation(summary = &quot;Create new Account&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;201&quot;, description = &quot;Account Object has been created&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid input&quot;),
+            @ApiResponse(responseCode = &quot;409&quot;, description = &quot;Account Object already exists&quot;)
+    })
+    public ResponseEntity&lt;Response&lt;AccountEntity&gt;&gt; create(@RequestBody CreateAccountVo createAccount) {
+<span class="nc" id="L57">        return new ResponseEntity&lt;&gt;(Response.&lt;AccountEntity&gt;builder()</span>
+<span class="nc" id="L58">                .data(this.accountService.create(createAccount))</span>
+<span class="nc" id="L59">                .message(&quot;Objeto fue creado&quot;).build(), HttpStatus.CREATED);</span>
+    }
+
+    /**
+     * Find account value by ID
+     *
+     * @param accountNumber String
+     * @return Catalogue value entity
+     */
+    @GetMapping(&quot;accountNumber/{accountNumber}&quot;)
+    @Operation(summary = &quot;Find account by accountNumber&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Find account by accountId&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Not found&quot;)
+    })
+    public ResponseEntity&lt;Response&lt;AccountEntity&gt;&gt; findById(@NotBlank @PathVariable String accountNumber) {
+<span class="nc" id="L75">        return new ResponseEntity&lt;&gt;(Response.&lt;AccountEntity&gt;builder()</span>
+<span class="nc" id="L76">                .data(this.accountService.findByAccounNumber(accountNumber)).build(), HttpStatus.OK);</span>
+    }
+
+    /**
+     * Find account value by ID
+     *
+     * @param accountId String
+     * @return Catalogue value entity
+     */
+    @GetMapping(&quot;{accountId}&quot;)
+    @Operation(summary = &quot;Find account by accountId&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Find account by accountId&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Not found&quot;)
+    })
+    public ResponseEntity&lt;Response&lt;AccountEntity&gt;&gt; findAccountByAccountId(@NotBlank @PathVariable Long accountId) {
+<span class="nc" id="L92">        return new ResponseEntity&lt;&gt;(Response.&lt;AccountEntity&gt;builder()</span>
+<span class="nc" id="L93">                .data(this.accountService.findById(accountId)).build(), HttpStatus.OK);</span>
+    }
+
+    /**
+     * Update Account.
+     *
+     * @param accountNumber String
+     * @param updateAccountVo UpdateAccount
+     * @return Status code
+     */
+    @PatchMapping(&quot;/{accountNumber}&quot;)
+    @Operation(summary = &quot;Update Account&quot;)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Successfully updated&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Account not found&quot;),
+    })
+    public ResponseEntity&lt;Response&lt;Void&gt;&gt; update(@NotBlank @PathVariable String accountNumber, @RequestBody UpdateAccountVo updateAccountVo) {
+<span class="nc" id="L110">        this.accountService.updateAccount(updateAccountVo, accountNumber);</span>
+<span class="nc" id="L111">        return new ResponseEntity&lt;&gt;(Response.&lt;Void&gt;builder().message(&quot;Actualizado con Ã©xito&quot;).build(), HttpStatus.OK);</span>
+    }
+
+    /**
+     * Find all Accounts.
+     *
+     * @return Status code
+     */
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = &quot;Get all Accounts&quot;)
+    @ApiResponses(value = { @ApiResponse(responseCode =  &quot;200&quot;, description = &quot;List of flow objects&quot;)})
+    public ResponseEntity&lt;Response&lt;List&lt;AccountEntity&gt;&gt;&gt; findAll(){
+<span class="nc" id="L123">        return new ResponseEntity&lt;&gt;(Response.&lt;List&lt;AccountEntity&gt;&gt;builder()</span>
+<span class="nc" id="L124">                .data(accountService.findAllAccounts())</span>
+<span class="nc" id="L125">                .message(&quot;SUCCESS&quot;)</span>
+<span class="nc" id="L126">                .build(),</span>
+                HttpStatus.OK);
+    }
+
+    /**
+     * Find all Accounts of Client.
+     *
+     * @return Status code
+     */
+    @GetMapping(&quot;client/{clientId}&quot;)
+    @Operation(summary = &quot;Get all Accounts&quot;)
+    @ApiResponses(value = { @ApiResponse(responseCode =  &quot;200&quot;, description = &quot;List of flow objects&quot;)})
+    public ResponseEntity&lt;Response&lt;List&lt;AccountEntity&gt;&gt;&gt; findAllByClientId(@PathVariable Long clientId){
+<span class="nc" id="L139">        System.out.println(clientId);</span>
+<span class="nc" id="L140">        return new ResponseEntity&lt;&gt;(Response.&lt;List&lt;AccountEntity&gt;&gt;builder()</span>
+<span class="nc" id="L141">                .data(accountService.findAllAccountsByClientId(clientId))</span>
+<span class="nc" id="L142">                .message(&quot;SUCCESS&quot;)</span>
+<span class="nc" id="L143">                .build(),</span>
+                HttpStatus.OK);
+    }
+
+    @GetMapping(&quot;/reportes&quot;)
+    public ResponseEntity&lt;Response&lt;List&lt;ReportAccountVo&gt;&gt;&gt;  getReportes(
+            @RequestParam(&quot;minDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
+            @RequestParam(&quot;maxDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate,
+            @RequestParam(&quot;identityNumber&quot;) Long identityNumber) {
+
+
+<span class="nc" id="L154">        return new ResponseEntity&lt;&gt;(Response.&lt;List&lt;ReportAccountVo&gt;&gt;builder()</span>
+<span class="nc" id="L155">                .data(accountService.generateReportAccountState(identityNumber, minDate, maxDate))</span>
+<span class="nc" id="L156">                .message(&quot;SUCCESS&quot;)</span>
+<span class="nc" id="L157">                .build(),</span>
+                HttpStatus.OK);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -51,13 +51,13 @@
 Run with gradle
 
 ```bash
-./gradlew neoris-account-microservices:bootRun
+./gradlew neoris-account-microservice:bootRun
 ```
 
 Run with jar
 
 ```bash
-java -jar ./neoris-account-microservices/build/libs/neoris-account-microservices-1.0.0-SNAPSHOT.jar
+java -jar ./neoris-account-microservice/build/libs/neoris-account-microservice-1.0.0-SNAPSHOT.jar
 ```
 
 ## Build docker image
@@ -71,11 +71,11 @@ java -jar ./neoris-account-microservices/build/libs/neoris-account-microservices
 2) Build docker image
 
 ```shell
-docker build --no-cache -t neoris-account-microservices:1.0.0-SNAPSHOT -f deploy/docker/Dockerfile .
+docker build --no-cache -t neoris-account-microservice:1.0.0-SNAPSHOT -f deploy/docker/Dockerfile .
 ```
 
 **OPTIONAL** - Test Docker image
 
 ```shell
-docker run -it --rm --env-file ./deploy/docker/.env --name neoris-account-microservices -p 8081:8080 neoris-account-microservices:1.0.0-SNAPSHOT
+docker run -it --rm --env-file ./deploy/docker/.env --name neoris-account-microservice -p 8081:8080 neoris-account-microservice:1.0.0-SNAPSHOT
 ```
