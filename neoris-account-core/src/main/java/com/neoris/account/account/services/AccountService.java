@@ -113,7 +113,7 @@ public class AccountService implements IAccountService {
                             .openingBalance(foundedMovement.getBalance())
                             .status(foundedAccount.getStatus())
                             .movement(foundedMovement.getTransactionValue())
-                            .availableBalance(foundedMovement.getBalance() - foundedMovement.getTransactionValue())
+                            .availableBalance(foundedMovement.getBalance() + foundedMovement.getTransactionValue())
                             .build());
                 }
             }
