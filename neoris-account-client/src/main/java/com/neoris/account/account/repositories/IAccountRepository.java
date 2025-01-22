@@ -8,6 +8,8 @@ import com.neoris.account.common.exceptions.EntityNotFoundException;
 import com.neoris.account.common.repositories.IQueryDslBaseRepository;
 import com.neoris.account.movements.entities.MovementsEntity;
 
+import java.util.List;
+
 /**
  * AccountRepository
  *
@@ -56,7 +58,11 @@ public interface IAccountRepository extends IQueryDslBaseRepository<AccountEntit
      * (logical delete not physically delete)
      * @author Kevin on 20/01/2025
      * @param updateAccountVo UpdateAccount
-     * @param accountId Long
+     * @param accountNumber String
      */
-    void updateAccount(UpdateAccountVo updateAccountVo, Long accountId);
+    void updateAccount(UpdateAccountVo updateAccountVo, String accountNumber);
+
+    List<AccountEntity> findAllAccounts();
+
+    List<AccountEntity> findAllAccountsByClientId(Long clientId);
 }

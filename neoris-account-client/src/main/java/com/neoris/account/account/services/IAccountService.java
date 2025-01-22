@@ -2,8 +2,12 @@ package com.neoris.account.account.services;
 
 import com.neoris.account.account.entities.AccountEntity;
 import com.neoris.account.account.vo.CreateAccountVo;
+import com.neoris.account.account.vo.ReportAccountVo;
 import com.neoris.account.account.vo.UpdateAccountVo;
 import com.neoris.account.common.exceptions.EntityNotFoundException;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * AccountService
@@ -54,5 +58,12 @@ public interface IAccountService {
      * @author Kevin on 20/01/2025
      * @param updateAccountVo UpdateAccount
      */
-    void updateAccount(UpdateAccountVo updateAccountVo, Long accountId) throws EntityNotFoundException;
+    void updateAccount(UpdateAccountVo updateAccountVo, String accountNumber) throws EntityNotFoundException;
+
+    List<AccountEntity> findAllAccounts();
+
+    List<ReportAccountVo> generateReportAccountState(Long identityNumber, Date minDate, Date maxDate);
+
+    List<AccountEntity> findAllAccountsByClientId(Long clientId);
+
 }

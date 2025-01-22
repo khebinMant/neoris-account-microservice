@@ -12,6 +12,9 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
 import static com.neoris.account.account.entities.QAccountEntity.accountEntity;
 
     /**
@@ -60,9 +63,10 @@ public class AccountRepository extends JPAQueryDslBaseRepository<AccountEntity> 
     }
 
     @Override
-    public void updateAccount(UpdateAccountVo updateAccountVo, Long accountId) {
+    public void updateAccount(UpdateAccountVo updateAccountVo, String accountNumber) {
         JPAUpdateClause updateClause = new JPAUpdateClause(entityManager, accountEntity);
-        updateClause.where(this.activeAccountCondition(accountId));
+        updateClause.where(accountEntity.status.eq(Status.ACTIVE.value));
+        updateClause.where(accountEntity.accountNumber.eq(accountNumber));
 
         if (updateAccountVo.getAccountType() != null) {
             updateClause.set(accountEntity.accountType, updateAccountVo.getAccountType());
@@ -81,7 +85,23 @@ public class AccountRepository extends JPAQueryDslBaseRepository<AccountEntity> 
         updateClause.execute();
     }
 
-    /**
+    @Override
+    public List<AccountEntity> findAllAccounts() {
+        return from(accountEntity)
+                .where(accountEntity.status.eq(Status.ACTIVE.value))
+                .fetch();
+    }
+
+        @Override
+        public List<AccountEntity> findAllAccountsByClientId(Long clientId) {
+            System.out.println(clientId);
+            return from(accountEntity)
+                    .where(accountEntity.status.eq(Status.ACTIVE.value))
+                    .where(accountEntity.clientId.eq(clientId))
+                    .fetch();
+        }
+
+        /**
      * Generate predicate status
      *
      * @param status Status

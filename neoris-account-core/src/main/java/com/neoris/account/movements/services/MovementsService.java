@@ -49,7 +49,7 @@ public class MovementsService implements IMovementsService {
             UpdateAccountVo updateAccountVo = UpdateAccountVo.builder()
                     .balance(foundedAccount.getOpeningBalance()+(createMovementVo.getTransactionValue()))
                     .build();
-            accountService.updateAccount(updateAccountVo, foundedAccount.getAccountId());
+            accountService.updateAccount(updateAccountVo, foundedAccount.getAccountNumber());
         }
         return movementsRepository.create(createMovementVo, foundedAccount);
     }
