@@ -12,7 +12,7 @@
 
 ### Configuración
 
-- Clona este reposiotrio utilizando `git clone https://github.com/khebinMant/neoris-customer-microservice`
+- Clona este reposiotrio utilizando `git clone https://github.com/khebinMant/neoris-account-microservice`
 - Es necesario tener instalado el JDK para Java 17.
 - Postman u otra herramienta como Thunder Client o Insonmia para el test de la API
 
@@ -21,7 +21,7 @@
 - Esperar a que se descargue las dependencias y se configure el proyecto
 - Ejecutar el comando './gradlew clean build -x test'
 - Correr el proyecto que arranca desde CustomerApplication en el paquete neoris-customer-services
-- Es importante levantar primero este micro servicio porque es independiente y de este depende el otro micro servicio
+- Es importante levantar segundo este micro servicio porque es dependiente del otro micro servicio
 - Listo lo tienes levantado localmente en el `http://localhost:8081/accountApi/`
 - En consideración no es necesario ejecutar ningún .sql el proyecto al levantarse ejecuta un semillero
   con la información necesario para hacer las pruebas dadas en el `Caso de Uso` del pdf proporcionado
